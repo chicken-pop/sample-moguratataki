@@ -13,7 +13,7 @@ namespace Utility
                 if (_instance == null)
                 {
                     _instance = (T)FindObjectOfType(typeof(T));
-                    if (Instance == null)
+                    if (_instance == null)
                     {
                         SetupInstance();
                     }

@@ -1,6 +1,7 @@
 public class SaveDataStore
 {
     private SaveDataRepository _saveDataRepository;
+    public SaveDataRepository SaveDataRepository => _saveDataRepository;
     private GameStorage _currentGameStorage;
     public GameStorage CurrentGameStorage => _currentGameStorage;
 

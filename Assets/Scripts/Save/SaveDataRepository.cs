@@ -15,6 +15,15 @@ public class SaveDataRepository
     }
 
     /// <summary>
+    /// セーブデータがあるかどうか
+    /// </summary>
+    /// <returns></returns>
+    public bool HasSaveData()
+    {
+        return PlayerPrefs.HasKey(C_GAME_STORAGE_DATA_SAVE_KEY_NAME);
+    }
+
+    /// <summary>
     /// ゲームストレージのデータを保存
     /// </summary>
     /// <param name="gameStorage"></param>
@@ -30,7 +39,6 @@ public class SaveDataRepository
         string jsonString = null;
         jsonString = PlayerPrefs.GetString(C_GAME_STORAGE_DATA_SAVE_KEY_NAME);
         GameStorage loadedGameStorage = JsonUtility.FromJson<GameStorage>(jsonString);
-
         return loadedGameStorage;
 
     }
