@@ -5,12 +5,16 @@ using Utility;
 public class InGameManager : SingletonMonoBehaviour<InGameManager>
 {
     // Presenter
+    private InGamePresenter _gamePresenter;
     private TimerPresenter _timerPresenter;
 
     // Model
+    private InGameModel _gameModel;
     private TimerModel _timerModel;
 
     // View
+    [SerializeField]
+    private InGameView _gameView;
     [SerializeField]
     private TimerView _timerView;
 
@@ -25,9 +29,7 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
 
     private void Update()
     {
-        // ƒeƒXƒg
-        _timerModel.CountDownManualUpdate();
-        _timerModel.TimerManualUpdate();
+        _gamePresenter.ManualUpdate();
     }
 
     private void Initialize()
@@ -37,6 +39,12 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
         _timerModel = new TimerModel();
         _modelBaseList.Add(_timerModel);
         _timerPresenter = new TimerPresenter(ref _timerModel, _timerView);
+
+        _gameModel = new InGameModel();
+        _modelBaseList.Add(_gameModel);
+        _gamePresenter = new InGamePresenter(_gameModel, _gameView);
+
+        _gamePresenter.Initialize();
     }
 
     public void Dispose()
