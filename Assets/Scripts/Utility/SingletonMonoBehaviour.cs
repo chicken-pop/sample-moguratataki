@@ -30,7 +30,7 @@ namespace Utility
         }
 
         // シーン内だけのSingletonとする
-        protected static bool isSceneSingleton = false;
+        protected static bool _isSceneSingleton = false;
 
         public virtual void Awake()
         {
@@ -50,7 +50,7 @@ namespace Utility
                 gameObj.name = typeof(T).Name;
 
                 _instance = gameObj.AddComponent<T>();
-                if (!isSceneSingleton)
+                if (!_isSceneSingleton)
                 {
                     DontDestroyOnLoad(gameObj);
                 }
@@ -66,7 +66,7 @@ namespace Utility
             {
                 _instance = this as T;
                 // シーン内だけのSingletonとする
-                if (!isSceneSingleton)
+                if (!_isSceneSingleton)
                 {
                     DontDestroyOnLoad(gameObject);
                 }

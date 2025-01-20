@@ -2,18 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
-public class TitleSceneManager : SingletonMonoBehaviour<TitleSceneManager>
+public class InGameManager : SingletonMonoBehaviour<InGameManager>
 {
     // Presenter
-    private TitleScenePresenter _titleScenePresenter;
+    private TimerPresenter _timerPresenter;
 
     // Model
-    private TitleSceneModel _titleSceneModel;
+    private TimerModel _timerModel;
 
     // View
     [SerializeField]
-    private TitleSceneView _titleSceneView;
-
+    private TimerView _timerView;
 
     private List<ModelBase> _modelBaseList;
     public List<ModelBase> ModelBaseList => _modelBaseList;
@@ -21,24 +20,23 @@ public class TitleSceneManager : SingletonMonoBehaviour<TitleSceneManager>
     public override void Awake()
     {
         _isSceneSingleton = true;
-
-        GameStore.Instance.Initialize();
-
-        if (GameStore.Instance.SaveDataStore.SaveDataRepository.HasSaveData())
-        {
-            GameStore.Instance.SaveDataStore.LoadGameStorage();
-        }
-
         Initialize();
+    }
+
+    private void Update()
+    {
+        // ƒeƒXƒg
+        _timerModel.CountDownManualUpdate();
+        _timerModel.TimerManualUpdate();
     }
 
     private void Initialize()
     {
         _modelBaseList = new List<ModelBase>();
 
-        _titleSceneModel = new TitleSceneModel();
-        _modelBaseList.Add(_titleSceneModel);
-        _titleScenePresenter = new TitleScenePresenter(ref _titleSceneModel, _titleSceneView);
+        _timerModel = new TimerModel();
+        _modelBaseList.Add(_timerModel);
+        _timerPresenter = new TimerPresenter(ref _timerModel, _timerView);
     }
 
     public void Dispose()

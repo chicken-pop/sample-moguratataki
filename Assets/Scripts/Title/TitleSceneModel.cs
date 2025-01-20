@@ -1,18 +1,13 @@
 using Cysharp.Threading.Tasks;
-using UniRx;
-using Utility;
 
-public class TitleSceneModel
+public class TitleSceneModel : ModelBase
 {
     private GameStorage _gameStorage;
     public GameStorage GameStorage => _gameStorage;
-    private CompositeDisposable _disposable;
-    public CompositeDisposable Disposable => _disposable;
 
     public TitleSceneModel()
     {
         _gameStorage = GameStore.Instance.SaveDataStore.CurrentGameStorage;
-        _disposable = new CompositeDisposable();
     }
 
     /// <summary>
@@ -53,13 +48,8 @@ public class TitleSceneModel
     public async UniTask LoadSceneAsync()
     {
         // シーン遷移前にリソースを解放
-        Dispose();
+        TitleSceneManager.Instance.Dispose();
 
         await LoadSceneManager.Instance.LoadSceneAsync(ConstantData.INGAME_SCENE);
-    }
-
-    private void Dispose()
-    {
-        _disposable?.Dispose();
     }
 }

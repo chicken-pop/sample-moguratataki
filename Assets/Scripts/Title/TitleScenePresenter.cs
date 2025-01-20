@@ -8,7 +8,7 @@ public class TitleScenePresenter
     private TitleSceneModel _model;
     private TitleSceneView _view;
 
-    public TitleScenePresenter(TitleSceneModel model, TitleSceneView view)
+    public TitleScenePresenter(ref TitleSceneModel model, TitleSceneView view)
     {
         _model = model;
         _view = view;
