@@ -1,3 +1,4 @@
+using System;
 using UniRx;
 
 public class TimerPresenter
@@ -5,15 +6,20 @@ public class TimerPresenter
     private TimerModel _model;
     private TimerView _view;
 
+    private Subject<Unit> _startGameSubject = new Subject<Unit>();
+    public IObservable<Unit> StartGameObservable => _startGameSubject;
+
     public TimerPresenter(ref TimerModel model, TimerView view)
     {
         _model = model;
         _view = view;
+    }
 
+    public void Initialize()
+    {
         _model.Initialize();
 
         SubscribeModelObservable();
-
     }
 
     private void SubscribeModelObservable()
@@ -22,6 +28,11 @@ public class TimerPresenter
             .Subscribe(value =>
             {
                 _view.SetCountDownText(value);
+                if (value < 0)
+                {
+                    _startGameSubject.OnNext(Unit.Default);
+                    _view.IsCountDownTextActive(false);
+                }
             })
             .AddTo(_model.Disposable);
 
@@ -31,6 +42,14 @@ public class TimerPresenter
                 _view.SetTimerText(value);
             })
             .AddTo(_model.Disposable);
+    }
+
+    /// <summary>
+    /// タイマー、カウントダウンの値を設定
+    /// </summary>
+    public void SetUp()
+    {
+        _model.SetUp();
     }
 
     public void CountDownManualUpdate()

@@ -11,8 +11,17 @@ public class TimerModel : ModelBase
 
     public void Initialize()
     {
-        _countDown = new ReactiveProperty<float>(ConstantData.COUNT_DOWN);
-        _timer = new ReactiveProperty<float>(ConstantData.TIME);
+        _countDown = new ReactiveProperty<float>();
+        _timer = new ReactiveProperty<float>();
+    }
+
+    /// <summary>
+    /// ’l‚Ì‰Šú’l‚ğİ’è
+    /// </summary>
+    public void SetUp()
+    {
+        _countDown.Value = ConstantData.COUNT_DOWN;
+        _timer.Value = ConstantData.TIME;
     }
 
     public void CountDownManualUpdate()

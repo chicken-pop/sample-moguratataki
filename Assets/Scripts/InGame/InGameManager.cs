@@ -42,7 +42,7 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
 
         _gameModel = new InGameModel();
         _modelBaseList.Add(_gameModel);
-        _gamePresenter = new InGamePresenter(_gameModel, _gameView);
+        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter);
 
         _gamePresenter.Initialize();
     }
@@ -53,6 +53,8 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
         {
             model.Dispose();
         }
+
+        _gamePresenter.Dispose();
     }
 
     void OnEnable()

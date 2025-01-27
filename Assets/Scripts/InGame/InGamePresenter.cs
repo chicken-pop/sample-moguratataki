@@ -1,9 +1,15 @@
+using Cysharp.Threading.Tasks;
 using GameState;
+using System;
+using UniRx;
 
-public class InGamePresenter
+public class InGamePresenter : IDisposable
 {
-    private InGameModel _model;
-    private InGameView _view;
+    private InGameModel _inGameModel;
+    private InGameView _inGameView;
+
+    private TimerPresenter _timerPresenter;
+    public TimerPresenter TimerPresenter => _timerPresenter;
 
     /// <summary>
     /// ステートマシン
@@ -25,10 +31,14 @@ public class InGamePresenter
     public InGameResultState InGameResultState => _inGameResultState;
     #endregion
 
-    public InGamePresenter(InGameModel model, InGameView view)
+    private readonly CompositeDisposable _disposable;
+    public CompositeDisposable Disposable => _disposable;
+
+    public InGamePresenter(InGameModel model, InGameView view, TimerPresenter timerPresenter)
     {
-        _model = model;
-        _view = view;
+        _inGameModel = model;
+        _inGameView = view;
+        _timerPresenter = timerPresenter;
 
         _inGameStateMachine = new InGameStateMachine();
 
@@ -36,15 +46,30 @@ public class InGamePresenter
         _inGameStartState = new InGameStartState(this, _inGameStateMachine);
         _inGameMainState = new InGameMainState(this, _inGameStateMachine);
         _inGameResultState = new InGameResultState(this, _inGameStateMachine);
+
+        _disposable = new CompositeDisposable();
     }
 
     public void Initialize()
     {
         _inGameStateMachine.InitializeGameState(_inGameInitState);
+
+        _timerPresenter.StartGameObservable
+            .Subscribe(_ =>
+            {
+                // MainStateへ
+                _inGameStateMachine.InitializeGameState(_inGameMainState);
+            })
+            .AddTo(_disposable);
     }
 
     public void ManualUpdate()
     {
         _inGameStateMachine.CurrentGameState.Update();
+    }
+
+    public void Dispose()
+    {
+        _disposable?.Dispose();
     }
 }

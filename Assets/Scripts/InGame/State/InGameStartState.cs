@@ -3,29 +3,36 @@ using Utility;
 
 public class InGameStartState : InGameState
 {
+    private InGamePresenter _inGamePresenter;
+    private InGameStateMachine _stateMachine;
+
     public InGameStartState(
         InGamePresenter inGamePresenter,
         InGameStateMachine inGameStateMachine)
         : base(inGamePresenter, inGameStateMachine)
     {
+        _inGamePresenter = inGamePresenter;
+        _stateMachine = inGameStateMachine;
     }
 
     public override void Enter()
     {
         DebugUtility.Log("Start StartState");
-        //TODO : カウントダウンの開始
+
+        // タイマー、カウントダウンの表記を設定
+        _inGamePresenter.TimerPresenter.SetUp();
     }
 
     public override void Update()
     {
-        //TODO : カウントダウン
+        // カウントダウン
+        _inGamePresenter.TimerPresenter.CountDownManualUpdate();
     }
 
     public override void Exit()
     {
         DebugUtility.Log("End StartState");
-        //TODO : MainStateへ
     }
 
-   
+
 }
