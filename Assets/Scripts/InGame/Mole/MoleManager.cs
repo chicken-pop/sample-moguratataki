@@ -18,7 +18,11 @@ public class MoleManager : MonoBehaviour
     private RectTransform _cellRectTransform;
 
     private CellPresenter[,] _cellPresenters;
+    public CellPresenter[,] CellPresenter => _cellPresenters;
 
+    /// <summary>
+    /// ƒZƒ‹ü‚è‚Ì‰Šú‰»
+    /// </summary>
     public void Initialize()
     {
         _cellPresenters = new CellPresenter[_rows, _cols];

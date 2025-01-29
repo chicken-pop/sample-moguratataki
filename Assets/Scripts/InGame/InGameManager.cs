@@ -28,6 +28,7 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
     {
         _isSceneSingleton = true;
 
+        // ゲームデータの初期化
         GameStore.Instance.Initialize();
         if (GameStore.Instance.SaveDataStore.SaveDataRepository.HasSaveData())
         {
@@ -42,17 +43,20 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
         _gamePresenter.ManualUpdate();
     }
 
+    /// <summary>
+    /// 各MVPの初期化
+    /// </summary>
     private void Initialize()
     {
         _modelBaseList = new List<ModelBase>();
 
         _timerModel = new TimerModel();
-        _modelBaseList.Add(_timerModel);
         _timerPresenter = new TimerPresenter(ref _timerModel, _timerView);
+        _modelBaseList.Add(_timerModel);
 
         _gameModel = new InGameModel();
-        _modelBaseList.Add(_gameModel);
         _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter, _moleManager);
+        _modelBaseList.Add(_gameModel);
 
         _gamePresenter.Initialize();
     }
@@ -65,6 +69,11 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
         }
 
         _gamePresenter.Dispose();
+
+        foreach (var presenter in _moleManager.CellPresenter)
+        {
+            presenter.Dispose();
+        }
     }
 
     void OnEnable()
