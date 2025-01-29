@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Utility;
 
 public class TitleSceneModel : ModelBase
 {
@@ -41,6 +42,14 @@ public class TitleSceneModel : ModelBase
 
         // ゲーム前のスコアは0として作成
         _gameStorage.SetUserData(userName, 0);
+    }
+
+    /// <summary>
+    /// ゲームデータを保存
+    /// </summary>
+    public void SaveGameStorageData()
+    {
+        GameStore.Instance.SaveDataStore.SaveDataRepository.SaveGameStorageData(_gameStorage);
     }
 
     /// <summary>

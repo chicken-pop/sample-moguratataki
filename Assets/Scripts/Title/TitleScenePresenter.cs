@@ -30,8 +30,7 @@ public class TitleScenePresenter
                 }
 
                 _model.CreateUserData(_view.GetUserNameString());
-                DebugUtility.Log(_model.GameStorage.UserDataList.Last().UserName);
-                DebugUtility.Log(_model.GameStorage.UserDataList.Last().Score);
+                _model.SaveGameStorageData();
                 _model.LoadSceneAsync().Forget();
             })
             .AddTo(_model.Disposable);

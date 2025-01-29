@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 
 public class GameStorage
@@ -8,17 +9,23 @@ public class GameStorage
     private List<UserData> _userDatList;
     public List<UserData> UserDataList => _userDatList;
 
+    [SerializeField]
     private string _currentUserName;
     public string CurrentUserName => _currentUserName;
+
+    [SerializeField]
+    private ReactiveProperty<int> _currentScoreRP ;
+    public IReadOnlyReactiveProperty<int> CurrentScoreRP => _currentScoreRP;
 
     public GameStorage(List<UserData> userDataList = null)
     {
         _userDatList = userDataList ?? new List<UserData>();
+        _currentScoreRP = new ReactiveProperty<int>(0);
     }
 
-    public void SetCurrentUserName(string userName)
+    public void SetupCurrentScore(int score)
     {
-        _currentUserName = userName;
+        _currentScoreRP.Value = score;
     }
 
     public void SetScore(int score)
@@ -34,10 +41,10 @@ public class GameStorage
     public void AddScoreCount(int count)
     {
         UserData userData = _userDatList.Where(userData => userData.UserName == _currentUserName).ToList().FirstOrDefault();
-
         if (userData != null)
         {
             userData.Score += count;
+            _currentScoreRP.Value += count;
         }
     }
 
@@ -48,6 +55,7 @@ public class GameStorage
         if (userData != null)
         {
             userData.Score -= count;
+            _currentScoreRP.Value -= count;
         }
     }
 
@@ -59,6 +67,15 @@ public class GameStorage
     public void SetUserData(string userName, int score)
     {
         _userDatList.Add(new UserData(userName, score));
+    }
+
+    /// <summary>
+    /// åªç›ÇÃÉÜÅ[ÉUÅ[ñºÇï€ë∂
+    /// </summary>
+    /// <param name="userName"></param>
+    public void SetCurrentUserName(string userName)
+    {
+        _currentUserName = userName;
     }
 
     /// <summary>

@@ -10,16 +10,20 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
     // Presenter
     private InGamePresenter _gamePresenter;
     private TimerPresenter _timerPresenter;
+    private ScorePresenter _scorePresenter;
 
     // Model
     private InGameModel _gameModel;
     private TimerModel _timerModel;
+    private ScoreModel _scoreModel;
 
     // View
     [SerializeField]
     private InGameView _gameView;
     [SerializeField]
     private TimerView _timerView;
+    [SerializeField]
+    private ScoreView _scoreView;
 
     private List<ModelBase> _modelBaseList;
     public List<ModelBase> ModelBaseList => _modelBaseList;
@@ -54,9 +58,15 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
         _timerPresenter = new TimerPresenter(ref _timerModel, _timerView);
         _modelBaseList.Add(_timerModel);
 
+        _scoreModel = new ScoreModel();
+        _scorePresenter = new ScorePresenter(_scoreModel, _scoreView);
+        _modelBaseList.Add(_scoreModel);
+
         _gameModel = new InGameModel();
-        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter, _moleManager);
+        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter, _scorePresenter, _moleManager);
         _modelBaseList.Add(_gameModel);
+
+
 
         _gamePresenter.Initialize();
     }

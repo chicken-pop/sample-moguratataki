@@ -1,9 +1,7 @@
 using Cysharp.Threading.Tasks;
 using GameState;
 using System;
-using System.Diagnostics;
 using UniRx;
-using Utility;
 
 public class InGamePresenter : IDisposable
 {
@@ -12,6 +10,9 @@ public class InGamePresenter : IDisposable
 
     private TimerPresenter _timerPresenter;
     public TimerPresenter TimerPresenter => _timerPresenter;
+
+    private ScorePresenter _scorePresenter;
+    public ScorePresenter ScorePresenter => _scorePresenter;
 
     private MoleManager _moleManager;
     public MoleManager MoleManager => _moleManager;
@@ -43,11 +44,13 @@ public class InGamePresenter : IDisposable
         InGameModel model,
         InGameView view,
         TimerPresenter timerPresenter,
+        ScorePresenter scorePresenter,
         MoleManager moleManager)
     {
         _inGameModel = model;
         _inGameView = view;
         _timerPresenter = timerPresenter;
+        _scorePresenter = scorePresenter;
         _moleManager = moleManager;
 
         _inGameStateMachine = new InGameStateMachine();

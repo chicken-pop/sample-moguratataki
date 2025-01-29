@@ -13,7 +13,12 @@ public static class ConstantData
     // ‚à‚®‚ç‚½‚½‚«
     public const int ROWS = 4;
     public const int COLS = 4;
+
     public const int CELL_WHDTH = 70;
     public const int CELL_HEIGHT = 70;
     public const int CELL_SPACING = 20;
+
+    public const int SLIME_POINT = 1;
+    public const int GHOST_POINT = 3;
+    public const int PRINCESS_POINT = 2;
 }

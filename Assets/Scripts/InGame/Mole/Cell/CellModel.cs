@@ -47,14 +47,17 @@ public class CellModel
         if (_currentCellState.Value == CellState.Slime)
         {
             _currentCellState.Value = CellState.SlimeBonus;
+            AddScore(ConstantData.SLIME_POINT);
         }
         else if (_currentCellState.Value == CellState.Ghost)
         {
             _currentCellState.Value = CellState.GhostBonus;
+            AddScore(ConstantData.GHOST_POINT);
         }
         else if (_currentCellState.Value == CellState.Princess)
         {
             _currentCellState.Value = CellState.PrincessPenalty;
+            SubtractScore(ConstantData.PRINCESS_POINT);
         }
     }
 
