@@ -1,17 +1,12 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Utility;
 
 public class MoleManager : MonoBehaviour
 {
-    private int _rows = 3;
-    private int _cols = 3;
-    private int _cellWidth = 70;
-    private int _cellHeight = 70;
-    private int _cellSpacing = 20;
-
     [SerializeField]
     private GameObject _cellPrefab;
     [SerializeField]
@@ -20,26 +15,33 @@ public class MoleManager : MonoBehaviour
     private CellPresenter[,] _cellPresenters;
     public CellPresenter[,] CellPresenter => _cellPresenters;
 
+    [SerializeField]
+    private List<CellView> _cellList;
+
     /// <summary>
     /// セル周りの初期化
     /// </summary>
     public void Initialize()
     {
-        _cellPresenters = new CellPresenter[_rows, _cols];
+        _cellPresenters = new CellPresenter[ConstantData.ROWS, ConstantData.COLS];
+        _cellList = new List<CellView>();
 
-        for (int i = 0; i < _rows; i++)
+        for (int i = 0; i < ConstantData.ROWS; i++)
         {
-            for (int j = 0; j < _cols; j++)
+            for (int j = 0; j < ConstantData.COLS; j++)
             {
                 CellModel model = new CellModel();
 
                 GameObject cellObj = Instantiate(_cellPrefab, _cellRectTransform);
                 RectTransform rectTransform = cellObj.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = new Vector2(i * (_cellWidth + _cellSpacing), -j * (_cellHeight + _cellSpacing));
+                rectTransform.anchoredPosition =
+                    new Vector2(i * (ConstantData.CELL_WHDTH + ConstantData.CELL_SPACING), -j * (ConstantData.CELL_HEIGHT + ConstantData.CELL_SPACING));
 
                 CellView view = cellObj.GetComponent<CellView>();
-
                 _cellPresenters[i, j] = new CellPresenter(model, view);
+
+                _cellList.Add(view);
+                view.gameObject.SetActive(false);
             }
         }
 
@@ -51,10 +53,19 @@ public class MoleManager : MonoBehaviour
     /// </summary>
     private void CenterGrid()
     {
-        float totalWidth = _cols * _cellWidth + (_cols - 1) * _cellSpacing;
-        float totalHeight = _rows * _cellHeight + (_rows - 1) * _cellSpacing;
+        float totalWidth = ConstantData.ROWS * ConstantData.CELL_WHDTH + (ConstantData.ROWS - 1) * ConstantData.CELL_SPACING;
+        float totalHeight = ConstantData.COLS * ConstantData.CELL_HEIGHT + (ConstantData.COLS - 1) * ConstantData.CELL_SPACING;
 
-        _cellRectTransform.anchoredPosition = new Vector2(-(totalWidth - _cellWidth) / 2, (totalHeight - _cellHeight) / 2);
+        _cellRectTransform.anchoredPosition
+            = new Vector2(-(totalWidth - ConstantData.CELL_WHDTH) / 2, (totalHeight - ConstantData.CELL_HEIGHT) / 2);
+    }
+
+    public void SetCellObjects(bool isActive)
+    {
+        for (int i = 0; i < _cellList.Count; i++)
+        {
+            _cellList[i].gameObject.SetActive(isActive);
+        }
     }
 
     /// <summary>
@@ -73,8 +84,8 @@ public class MoleManager : MonoBehaviour
                 await UniTask.Delay(TimeSpan.FromSeconds(randomInterval));
 
                 // ランダムなセルを選択
-                int randomRow = UnityEngine.Random.Range(0, _rows);
-                int randomCol = UnityEngine.Random.Range(0, _cols);
+                int randomRow = UnityEngine.Random.Range(0, ConstantData.ROWS);
+                int randomCol = UnityEngine.Random.Range(0, ConstantData.COLS);
 
                 // ランダムな状態を設定
                 CellState randomState;
@@ -94,7 +105,7 @@ public class MoleManager : MonoBehaviour
                 _cellPresenters[randomRow, randomCol].SetState(randomState);
 
                 // 一定時間後に元に戻す
-                await UniTask.Delay(TimeSpan.FromSeconds(1f));
+                await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
 
                 if (_cellPresenters[randomRow, randomCol].Model.IsPressed)
                 {

@@ -9,6 +9,9 @@ public class TimerPresenter
     private Subject<Unit> _startGameSubject = new Subject<Unit>();
     public IObservable<Unit> StartGameObservable => _startGameSubject;
 
+    private Subject<Unit> _endGameSubject = new Subject<Unit>();
+    public IObservable<Unit> EndGameObservable => _endGameSubject;
+
     public TimerPresenter(ref TimerModel model, TimerView view)
     {
         _model = model;
@@ -40,6 +43,10 @@ public class TimerPresenter
             .Subscribe(value =>
             {
                 _view.SetTimerText(value);
+                if (value < 0)
+                {
+                    _endGameSubject.OnNext(Unit.Default);
+                }
             })
             .AddTo(_model.Disposable);
     }

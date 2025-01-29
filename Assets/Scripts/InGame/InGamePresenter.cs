@@ -1,7 +1,9 @@
 using Cysharp.Threading.Tasks;
 using GameState;
 using System;
+using System.Diagnostics;
 using UniRx;
+using Utility;
 
 public class InGamePresenter : IDisposable
 {
@@ -67,7 +69,15 @@ public class InGamePresenter : IDisposable
             .Subscribe(_ =>
             {
                 // MainState‚Ö
-                _inGameStateMachine.InitializeGameState(_inGameMainState);
+                _inGameStateMachine.ChangeState(_inGameMainState);
+            })
+            .AddTo(_disposable);
+
+        _timerPresenter.EndGameObservable
+            .Subscribe(_ =>
+            {
+                // ResultState‚Ö
+                _inGameStateMachine.ChangeState(_inGameResultState);
             })
             .AddTo(_disposable);
     }

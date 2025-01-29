@@ -12,7 +12,7 @@ public class InGameResultState : InGameState
 
     public override void Enter()
     {
-        DebugUtility.Log("Start MainState");
+        DebugUtility.Log("Start ResultState");
         //TODO : Œ‹‰Ê‚ð•\Ž¦
     }
 
