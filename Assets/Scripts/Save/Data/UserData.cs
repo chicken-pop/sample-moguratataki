@@ -9,9 +9,4 @@ public class UserData
         UserName = userName;
         Score = score;
     }
-
-    public void SetScore(int score)
-    {
-        Score = score;
-    }
 }

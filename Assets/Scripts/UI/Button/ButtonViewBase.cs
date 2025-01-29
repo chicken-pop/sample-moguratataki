@@ -11,4 +11,9 @@ public class ButtonViewBase : MonoBehaviour
     public Button Button => _button;
 
     public IObservable<Unit> OnClickAsObservable() => _button.OnClickAsObservable();
+
+    public virtual void SetInteractable(bool isInteractable)
+    {
+        _button.interactable = isInteractable;
+    }
 }

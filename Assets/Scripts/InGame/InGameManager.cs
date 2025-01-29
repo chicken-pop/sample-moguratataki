@@ -4,6 +4,9 @@ using Utility;
 
 public class InGameManager : SingletonMonoBehaviour<InGameManager>
 {
+    [SerializeField]
+    private MoleManager _moleManager;
+
     // Presenter
     private InGamePresenter _gamePresenter;
     private TimerPresenter _timerPresenter;
@@ -24,6 +27,13 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
     public override void Awake()
     {
         _isSceneSingleton = true;
+
+        GameStore.Instance.Initialize();
+        if (GameStore.Instance.SaveDataStore.SaveDataRepository.HasSaveData())
+        {
+            GameStore.Instance.SaveDataStore.LoadGameStorage();
+        }
+
         Initialize();
     }
 
@@ -42,7 +52,7 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
 
         _gameModel = new InGameModel();
         _modelBaseList.Add(_gameModel);
-        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter);
+        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter, _moleManager);
 
         _gamePresenter.Initialize();
     }

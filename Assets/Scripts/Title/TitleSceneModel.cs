@@ -37,6 +37,8 @@ public class TitleSceneModel : ModelBase
     /// <param name="userName"></param>
     public void CreateUserData(string userName)
     {
+        _gameStorage.SetCurrentUserName(userName);
+
         // ゲーム前のスコアは0として作成
         _gameStorage.SetUserData(userName, 0);
     }

@@ -11,6 +11,9 @@ public class InGamePresenter : IDisposable
     private TimerPresenter _timerPresenter;
     public TimerPresenter TimerPresenter => _timerPresenter;
 
+    private MoleManager _moleManager;
+    public MoleManager MoleManager => _moleManager;
+
     /// <summary>
     /// ステートマシン
     /// </summary>
@@ -34,11 +37,16 @@ public class InGamePresenter : IDisposable
     private readonly CompositeDisposable _disposable;
     public CompositeDisposable Disposable => _disposable;
 
-    public InGamePresenter(InGameModel model, InGameView view, TimerPresenter timerPresenter)
+    public InGamePresenter(
+        InGameModel model,
+        InGameView view,
+        TimerPresenter timerPresenter,
+        MoleManager moleManager)
     {
         _inGameModel = model;
         _inGameView = view;
         _timerPresenter = timerPresenter;
+        _moleManager = moleManager;
 
         _inGameStateMachine = new InGameStateMachine();
 
@@ -53,6 +61,7 @@ public class InGamePresenter : IDisposable
     public void Initialize()
     {
         _inGameStateMachine.InitializeGameState(_inGameInitState);
+        _moleManager.Initialize();
 
         _timerPresenter.StartGameObservable
             .Subscribe(_ =>
