@@ -14,6 +14,9 @@ public class InGamePresenter : IDisposable
     private ScorePresenter _scorePresenter;
     public ScorePresenter ScorePresenter => _scorePresenter;
 
+    private ResultPresenter _resultPresenter;
+    public ResultPresenter ResultPresenter => _resultPresenter;
+
     private MoleManager _moleManager;
     public MoleManager MoleManager => _moleManager;
 
@@ -45,12 +48,14 @@ public class InGamePresenter : IDisposable
         InGameView view,
         TimerPresenter timerPresenter,
         ScorePresenter scorePresenter,
+        ResultPresenter resultPresenter,
         MoleManager moleManager)
     {
         _inGameModel = model;
         _inGameView = view;
         _timerPresenter = timerPresenter;
         _scorePresenter = scorePresenter;
+        _resultPresenter = resultPresenter;
         _moleManager = moleManager;
 
         _inGameStateMachine = new InGameStateMachine();
@@ -81,6 +86,23 @@ public class InGamePresenter : IDisposable
             {
                 // ResultState‚Ö
                 _inGameStateMachine.ChangeState(_inGameResultState);
+            })
+            .AddTo(_disposable);
+
+        _resultPresenter.RetryButtonObservable
+            .Subscribe(_ =>
+            {
+                // StartState‚Ö
+                _inGameStateMachine.ChangeState(_inGameStartState);
+            })
+            .AddTo(_disposable);
+
+        _resultPresenter.TitleButtonObservable
+            .Subscribe(async _ =>
+            {
+                InGameManager.Instance.Dispose();
+                // ƒ^ƒCƒgƒ‹‚É–ß‚é
+                await LoadSceneManager.Instance.LoadSceneAsync(ConstantData.TITLE_SCENE);
             })
             .AddTo(_disposable);
     }

@@ -11,11 +11,13 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
     private InGamePresenter _gamePresenter;
     private TimerPresenter _timerPresenter;
     private ScorePresenter _scorePresenter;
+    private ResultPresenter _resultPresenter;
 
     // Model
     private InGameModel _gameModel;
     private TimerModel _timerModel;
     private ScoreModel _scoreModel;
+    private ResultModel _resultModel;
 
     // View
     [SerializeField]
@@ -24,6 +26,8 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
     private TimerView _timerView;
     [SerializeField]
     private ScoreView _scoreView;
+    [SerializeField]
+    private ResultView _resultView;
 
     private List<ModelBase> _modelBaseList;
     public List<ModelBase> ModelBaseList => _modelBaseList;
@@ -62,8 +66,12 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
         _scorePresenter = new ScorePresenter(_scoreModel, _scoreView);
         _modelBaseList.Add(_scoreModel);
 
+        _resultModel = new ResultModel();
+        _resultPresenter = new ResultPresenter(_resultModel, _resultView);
+        _modelBaseList.Add(_resultModel);
+
         _gameModel = new InGameModel();
-        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter, _scorePresenter, _moleManager);
+        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter, _scorePresenter, _resultPresenter, _moleManager);
         _modelBaseList.Add(_gameModel);
 
 
@@ -84,6 +92,8 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
         {
             presenter.Dispose();
         }
+
+        _resultPresenter.Dispose();
     }
 
     void OnEnable()

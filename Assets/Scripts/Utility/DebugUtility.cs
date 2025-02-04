@@ -17,7 +17,7 @@ namespace Utility
         public static void LogError<T>(T message)
         {
             Debug.LogError(message);
-        }       
+        }
     }
 }
 

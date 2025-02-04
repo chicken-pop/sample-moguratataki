@@ -22,6 +22,8 @@ public class InGameStartState : InGameState
         // タイマー、カウントダウンの表記を設定
         _inGamePresenter.TimerPresenter.SetUp();
         _inGamePresenter.ScorePresenter.SetUp();
+        // リザルトの表記を設定
+        _inGamePresenter.ResultPresenter.Setup();
     }
 
     public override void Update()

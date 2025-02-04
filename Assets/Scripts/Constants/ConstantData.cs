@@ -21,4 +21,6 @@ public static class ConstantData
     public const int SLIME_POINT = 1;
     public const int GHOST_POINT = 3;
     public const int PRINCESS_POINT = 2;
+
+    public const int RANKING_COUNT = 5;
 }
