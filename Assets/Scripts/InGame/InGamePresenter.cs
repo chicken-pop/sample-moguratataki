@@ -112,6 +112,11 @@ public class InGamePresenter : IDisposable
         _inGameStateMachine.CurrentGameState.Update();
     }
 
+    public void SaveGameStorageData()
+    {
+        _inGameModel.SaveGameStorageData();
+    }
+
     public void Dispose()
     {
         _disposable?.Dispose();

@@ -14,7 +14,7 @@ public class GameStorage
     public string CurrentUserName => _currentUserName;
 
     [SerializeField]
-    private ReactiveProperty<int> _currentScoreRP ;
+    private ReactiveProperty<int> _currentScoreRP;
     public IReadOnlyReactiveProperty<int> CurrentScoreRP => _currentScoreRP;
 
     public GameStorage(List<UserData> userDataList = null)
@@ -57,6 +57,13 @@ public class GameStorage
             userData.Score -= count;
             _currentScoreRP.Value -= count;
         }
+    }
+
+    public bool IsScoreUpdate()
+    {
+        UserData userData = _userDatList.Where(userData => userData.UserName == _currentUserName).ToList().FirstOrDefault();
+
+        return userData.Score <= _currentScoreRP.Value;
     }
 
     /// <summary>

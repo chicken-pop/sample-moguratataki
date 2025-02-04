@@ -33,6 +33,7 @@ public class ScorePresenter : IDisposable
     public void SetUp()
     {
         _model.GameStorage.SetupCurrentScore(0);
+        _model.GameStorage.SetScore(0);
     }
 
     public void Dispose()

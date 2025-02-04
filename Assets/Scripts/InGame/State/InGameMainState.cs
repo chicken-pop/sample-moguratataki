@@ -41,6 +41,8 @@ public class InGameMainState : InGameState
         _cancellationTokenSource.Cancel();
         _inGamePresenter.MoleManager.SetCellObjects(false);
 
+        _inGamePresenter.SaveGameStorageData();
+
         DebugUtility.Log("End MainState");
     }  
 }

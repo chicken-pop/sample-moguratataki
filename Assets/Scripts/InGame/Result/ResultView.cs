@@ -34,7 +34,7 @@ public class ResultView : MonoBehaviour
 
         for (int i = 0; i < ConstantData.RANKING_COUNT; i++)
         {
-            if (userData[i] != null)
+            if (i < userData.Count && userData[i] != null)
             {
                 _nameTMP[i].text = userData[i].UserName;
                 _scoreTMP[i].text = userData[i].Score.ToString();
