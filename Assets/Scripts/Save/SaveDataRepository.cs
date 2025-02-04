@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SaveDataRepository
 {
-    private const string C_GAME_STORAGE_DATA_SAVE_KEY_NAME = "GameStorageData";　// セーブデータを複数作りたい場合は、Keyを複数作成
+    public const string C_GAME_STORAGE_DATA_SAVE_KEY_NAME = "GameStorageData";　// セーブデータを複数作りたい場合は、Keyを複数作成
 
     /// <summary>
     /// ゲームストレージの初期値を取得
