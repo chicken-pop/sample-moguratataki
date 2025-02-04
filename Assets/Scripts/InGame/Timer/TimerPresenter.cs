@@ -57,6 +57,7 @@ public class TimerPresenter
     public void SetUp()
     {
         _model.SetUp();
+        _view.IsCountDownTextActive(true);
     }
 
     public void CountDownManualUpdate()
