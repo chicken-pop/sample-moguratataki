@@ -31,9 +31,7 @@ public class CellView : ButtonView
     /// キャラクター画像の設定
     /// </summary>
     /// <param name="cellState"></param>
-    public async UniTask 
-        
-        SetCharacterImage(CellState cellState, CancellationToken token)
+    public async UniTask SetCharacterImage(CellState cellState, CancellationToken token)
     {
         try
         {

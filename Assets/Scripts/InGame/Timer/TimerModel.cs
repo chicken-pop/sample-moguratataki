@@ -1,7 +1,7 @@
 using UniRx;
 using UnityEngine;
 
-public class TimerModel : ModelBase
+public class TimerModel
 {
     private ReactiveProperty<float> _countDown;
     public IReadOnlyReactiveProperty<float> CountDown => _countDown;

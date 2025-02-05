@@ -1,14 +1,12 @@
 using Cysharp.Threading.Tasks;
-using System.Linq;
 using UniRx;
-using Utility;
 
-public class TitleScenePresenter
+public class TitleScenePresenter : PresenterBase
 {
     private TitleSceneModel _model;
     private TitleSceneView _view;
 
-    public TitleScenePresenter(ref TitleSceneModel model, TitleSceneView view)
+    public TitleScenePresenter(TitleSceneModel model, TitleSceneView view)
     {
         _model = model;
         _view = view;
@@ -33,6 +31,6 @@ public class TitleScenePresenter
                 _model.SaveGameStorageData();
                 _model.LoadSceneAsync().Forget();
             })
-            .AddTo(_model.Disposable);
+            .AddTo(Disposable);
     }
 }

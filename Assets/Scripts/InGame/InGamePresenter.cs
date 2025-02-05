@@ -3,10 +3,9 @@ using GameState;
 using System;
 using UniRx;
 
-public class InGamePresenter : IDisposable
+public class InGamePresenter : PresenterBase
 {
     private InGameModel _inGameModel;
-    private InGameView _inGameView;
 
     private TimerPresenter _timerPresenter;
     public TimerPresenter TimerPresenter => _timerPresenter;
@@ -40,19 +39,14 @@ public class InGamePresenter : IDisposable
     public InGameResultState InGameResultState => _inGameResultState;
     #endregion
 
-    private readonly CompositeDisposable _disposable;
-    public CompositeDisposable Disposable => _disposable;
-
     public InGamePresenter(
         InGameModel model,
-        InGameView view,
         TimerPresenter timerPresenter,
         ScorePresenter scorePresenter,
         ResultPresenter resultPresenter,
         MoleManager moleManager)
     {
         _inGameModel = model;
-        _inGameView = view;
         _timerPresenter = timerPresenter;
         _scorePresenter = scorePresenter;
         _resultPresenter = resultPresenter;
@@ -64,8 +58,6 @@ public class InGamePresenter : IDisposable
         _inGameStartState = new InGameStartState(this, _inGameStateMachine);
         _inGameMainState = new InGameMainState(this, _inGameStateMachine);
         _inGameResultState = new InGameResultState(this, _inGameStateMachine);
-
-        _disposable = new CompositeDisposable();
     }
 
     public void Initialize()
@@ -79,7 +71,7 @@ public class InGamePresenter : IDisposable
                 // MainState‚Ö
                 _inGameStateMachine.ChangeState(_inGameMainState);
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
 
         _timerPresenter.EndGameObservable
             .Subscribe(_ =>
@@ -87,7 +79,7 @@ public class InGamePresenter : IDisposable
                 // ResultState‚Ö
                 _inGameStateMachine.ChangeState(_inGameResultState);
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
 
         _resultPresenter.RetryButtonObservable
             .Subscribe(_ =>
@@ -95,7 +87,7 @@ public class InGamePresenter : IDisposable
                 // StartState‚Ö
                 _inGameStateMachine.ChangeState(_inGameStartState);
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
 
         _resultPresenter.TitleButtonObservable
             .Subscribe(async _ =>
@@ -104,7 +96,7 @@ public class InGamePresenter : IDisposable
                 // ƒ^ƒCƒgƒ‹‚É–ß‚é
                 await LoadSceneManager.Instance.LoadSceneAsync(ConstantData.TITLE_SCENE);
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
     }
 
     public void ManualUpdate()
@@ -115,10 +107,5 @@ public class InGamePresenter : IDisposable
     public void SaveGameStorageData()
     {
         _inGameModel.SaveGameStorageData();
-    }
-
-    public void Dispose()
-    {
-        _disposable?.Dispose();
     }
 }

@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using UniRx;
 
-public class ModelBase : IDisposable
+public class PresenterBase : IDisposable
 {
     private readonly CompositeDisposable _disposable;
     public CompositeDisposable Disposable => _disposable;
 
-    public ModelBase()
+    public PresenterBase()
     {
         _disposable = new CompositeDisposable();
     }

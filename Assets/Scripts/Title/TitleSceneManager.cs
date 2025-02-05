@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
@@ -13,10 +12,6 @@ public class TitleSceneManager : SingletonMonoBehaviour<TitleSceneManager>
     // View
     [SerializeField]
     private TitleSceneView _titleSceneView;
-
-
-    private List<ModelBase> _modelBaseList;
-    public List<ModelBase> ModelBaseList => _modelBaseList;
 
     public override void Awake()
     {
@@ -34,19 +29,13 @@ public class TitleSceneManager : SingletonMonoBehaviour<TitleSceneManager>
 
     private void Initialize()
     {
-        _modelBaseList = new List<ModelBase>();
-
         _titleSceneModel = new TitleSceneModel();
-        _modelBaseList.Add(_titleSceneModel);
-        _titleScenePresenter = new TitleScenePresenter(ref _titleSceneModel, _titleSceneView);
+        _titleScenePresenter = new TitleScenePresenter(_titleSceneModel, _titleSceneView);
     }
 
     public void Dispose()
     {
-        foreach (var model in ModelBaseList)
-        {
-            model.Dispose();
-        }
+        _titleScenePresenter.Dispose();
     }
 
     void OnEnable()

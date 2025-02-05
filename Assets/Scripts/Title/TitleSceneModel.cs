@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Utility;
 
-public class TitleSceneModel : ModelBase
+public class TitleSceneModel
 {
     private GameStorage _gameStorage;
     public GameStorage GameStorage => _gameStorage;

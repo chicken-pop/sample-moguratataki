@@ -21,16 +21,11 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
 
     // View
     [SerializeField]
-    private InGameView _gameView;
-    [SerializeField]
     private TimerView _timerView;
     [SerializeField]
     private ScoreView _scoreView;
     [SerializeField]
     private ResultView _resultView;
-
-    private List<ModelBase> _modelBaseList;
-    public List<ModelBase> ModelBaseList => _modelBaseList;
 
     public override void Awake()
     {
@@ -56,44 +51,27 @@ public class InGameManager : SingletonMonoBehaviour<InGameManager>
     /// </summary>
     private void Initialize()
     {
-        _modelBaseList = new List<ModelBase>();
-
         _timerModel = new TimerModel();
         _timerPresenter = new TimerPresenter(ref _timerModel, _timerView);
-        _modelBaseList.Add(_timerModel);
 
         _scoreModel = new ScoreModel();
         _scorePresenter = new ScorePresenter(_scoreModel, _scoreView);
-        _modelBaseList.Add(_scoreModel);
 
         _resultModel = new ResultModel();
         _resultPresenter = new ResultPresenter(_resultModel, _resultView);
-        _modelBaseList.Add(_resultModel);
 
         _gameModel = new InGameModel();
-        _gamePresenter = new InGamePresenter(_gameModel, _gameView, _timerPresenter, _scorePresenter, _resultPresenter, _moleManager);
-        _modelBaseList.Add(_gameModel);
-
-
+        _gamePresenter = new InGamePresenter(_gameModel, _timerPresenter, _scorePresenter, _resultPresenter, _moleManager);
 
         _gamePresenter.Initialize();
     }
 
     public void Dispose()
     {
-        foreach (var model in ModelBaseList)
-        {
-            model.Dispose();
-        }
-
-        _gamePresenter.Dispose();
-
-        foreach (var presenter in _moleManager.CellPresenter)
-        {
-            presenter.Dispose();
-        }
-
+        _timerPresenter.Dispose();
+        _scorePresenter.Dispose();
         _resultPresenter.Dispose();
+        _gamePresenter.Dispose();
     }
 
     void OnEnable()

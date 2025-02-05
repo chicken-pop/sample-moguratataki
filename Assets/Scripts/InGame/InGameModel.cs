@@ -1,10 +1,12 @@
-public class InGameModel : ModelBase
+public class InGameModel
 {
     private GameStorage _gameStorage;
+    private SaveDataRepository _saveDataRepository;
 
     public InGameModel()
     {
-        _gameStorage = GameStore.Instance.SaveDataStore.CurrentGameStorage; ;
+        _gameStorage = GameStore.Instance.SaveDataStore.CurrentGameStorage;
+        _saveDataRepository = GameStore.Instance.SaveDataStore.SaveDataRepository;
     }
 
     /// <summary>
@@ -15,7 +17,8 @@ public class InGameModel : ModelBase
         // 前の自分のスコアよりもよかった場合セーブ
         if (_gameStorage.IsScoreUpdate())
         {
-            GameStore.Instance.SaveDataStore.SaveDataRepository.SaveGameStorageData(_gameStorage);
-        }       
+            _gameStorage.SetScore(_gameStorage.CurrentScoreRP.Value);
+            _saveDataRepository.SaveGameStorageData(_gameStorage);
+        }
     }
 }

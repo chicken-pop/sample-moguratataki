@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using UniRx;
 
-public class CellPresenter
+public class CellPresenter : PresenterBase
 {
     private CellModel _model;
     public CellModel Model => _model;
-
     private CellView _view;
 
     private CancellationTokenSource _cancellationTokenSource;
-
-    private readonly CompositeDisposable _disposable;
-    public CompositeDisposable Disposable => _disposable;
 
     public CellPresenter(CellModel model, CellView view)
     {
@@ -21,7 +17,6 @@ public class CellPresenter
         _view = view;
 
         _cancellationTokenSource = new CancellationTokenSource();
-        _disposable = new CompositeDisposable();
 
         SubscribeModelObservable();
         SubscribeViewObservable();
@@ -46,7 +41,7 @@ public class CellPresenter
 
                 _model.SetPressValue(false);
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
     }
 
     private void SubscribeViewObservable()
@@ -56,15 +51,10 @@ public class CellPresenter
             {
                 _model.SetBonusState();
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
     }
     public void SetState(CellState cellState)
     {
         _model.SetState(cellState);
-    }
-
-    public void Dispose()
-    {
-        _disposable?.Dispose();
     }
 }

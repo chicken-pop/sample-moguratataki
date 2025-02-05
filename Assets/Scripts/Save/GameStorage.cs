@@ -23,11 +23,37 @@ public class GameStorage
         _currentScoreRP = new ReactiveProperty<int>(0);
     }
 
+    /// <summary>
+    /// スコアを設定
+    /// </summary>
+    /// <param name="score"></param>
     public void SetupCurrentScore(int score)
     {
         _currentScoreRP.Value = score;
     }
 
+    /// <summary>
+    /// スコアを加算
+    /// </summary>
+    /// <param name="count"></param>
+    public void AddScoreCount(int count)
+    {
+        _currentScoreRP.Value += count;
+    }
+
+    /// <summary>
+    /// スコアを減算
+    /// </summary>
+    /// <param name="count"></param>
+    public void SubtractScoreCount(int count)
+    {
+        _currentScoreRP.Value -= count;
+    }
+
+    /// <summary>
+    /// データにスコアを設定
+    /// </summary>
+    /// <param name="score"></param>
     public void SetScore(int score)
     {
         UserData userData = _userDatList.Where(userData => userData.UserName == _currentUserName).ToList().FirstOrDefault();
@@ -35,27 +61,6 @@ public class GameStorage
         if (userData != null)
         {
             userData.Score = score;
-        }
-    }
-
-    public void AddScoreCount(int count)
-    {
-        UserData userData = _userDatList.Where(userData => userData.UserName == _currentUserName).ToList().FirstOrDefault();
-        if (userData != null)
-        {
-            userData.Score += count;
-            _currentScoreRP.Value += count;
-        }
-    }
-
-    public void SubtractScoreCount(int count)
-    {
-        UserData userData = _userDatList.Where(userData => userData.UserName == _currentUserName).ToList().FirstOrDefault();
-
-        if (userData != null)
-        {
-            userData.Score -= count;
-            _currentScoreRP.Value -= count;
         }
     }
 
@@ -73,7 +78,11 @@ public class GameStorage
     /// <param name="score"></param>
     public void SetUserData(string userName, int score)
     {
-        _userDatList.Add(new UserData(userName, score));
+        UserData userData = _userDatList.Where(userData => userData.UserName == _currentUserName).ToList().FirstOrDefault();
+        if (userData == null)
+        {
+            _userDatList.Add(new UserData(userName, score));
+        }
     }
 
     /// <summary>

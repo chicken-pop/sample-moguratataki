@@ -2,20 +2,15 @@ using System;
 using UniRx;
 using Utility;
 
-public class ScorePresenter : IDisposable
+public class ScorePresenter : PresenterBase
 {
     private ScoreModel _model;
     private ScoreView _view;
-
-    private readonly CompositeDisposable _disposable;
-    public CompositeDisposable Disposable => _disposable;
 
     public ScorePresenter(ScoreModel model, ScoreView view)
     {
         _model = model;
         _view = view;
-
-        _disposable = new CompositeDisposable();
 
         SubscribeModelObservable();
     }
@@ -27,17 +22,11 @@ public class ScorePresenter : IDisposable
             {
                 _view.SetScore(value);
             })
-        .AddTo(_disposable);
+        .AddTo(Disposable);
     }
 
     public void SetUp()
     {
         _model.GameStorage.SetupCurrentScore(0);
-        _model.GameStorage.SetScore(0);
-    }
-
-    public void Dispose()
-    {
-        _disposable?.Dispose();
     }
 }

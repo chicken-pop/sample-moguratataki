@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using UniRx;
 
-public class ResultPresenter
+public class ResultPresenter : PresenterBase
 {
     private ResultModel _model;
     private ResultView _view;
@@ -12,15 +12,10 @@ public class ResultPresenter
     private Subject<Unit> _titleButtonSubject = new Subject<Unit>();
     public IObservable<Unit> TitleButtonObservable => _titleButtonSubject;
 
-    private readonly CompositeDisposable _disposable;
-    public CompositeDisposable Disposable => _disposable;
-
     public ResultPresenter(ResultModel model, ResultView view)
     {
         _model = model;
         _view = view;
-
-        _disposable = new CompositeDisposable();
 
         SubscribeViewObservable();
     }
@@ -32,14 +27,14 @@ public class ResultPresenter
             {
                 _retryButtonSubject.OnNext(Unit.Default);
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
 
         _view.TitleButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 _titleButtonSubject.OnNext(Unit.Default);
             })
-            .AddTo(_disposable);
+            .AddTo(Disposable);
     }
 
     public void Setup()
@@ -54,10 +49,5 @@ public class ResultPresenter
     {
         _view.SetRanking(_model.GetRankingUserData());
         _view.SetButton(true);
-    }
-
-    public void Dispose()
-    {
-        _disposable?.Dispose();
     }
 }

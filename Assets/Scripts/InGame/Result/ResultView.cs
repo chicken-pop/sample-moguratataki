@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -28,6 +27,10 @@ public class ResultView : MonoBehaviour
         SetButton(false);
     }
 
+    /// <summary>
+    /// ƒ‰ƒ“ƒLƒ“ƒO‚ğİ’è
+    /// </summary>
+    /// <param name="userData"></param>
     public void SetRanking(List<UserData> userData)
     {
         _rankingPanel.SetActive(true);

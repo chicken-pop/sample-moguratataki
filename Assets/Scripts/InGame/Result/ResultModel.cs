@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class ResultModel : ModelBase
+public class ResultModel
 {
     private GameStorage _gameStorage;
 
@@ -10,6 +10,10 @@ public class ResultModel : ModelBase
         _gameStorage = GameStore.Instance.SaveDataStore.CurrentGameStorage;
     }
 
+    /// <summary>
+    /// ƒ|ƒCƒ“ƒg‚Ì‚‚¢‡‚ÅUserData‚ğæ“¾
+    /// </summary>
+    /// <returns></returns>
     public List<UserData> GetRankingUserData()
     {
         return _gameStorage.UserDataList.OrderByDescending(data => data.Score).ToList();

@@ -1,4 +1,4 @@
-public class ScoreModel : ModelBase
+public class ScoreModel
 {
     private GameStorage _gameStorage;
     public GameStorage GameStorage => _gameStorage;

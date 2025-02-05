@@ -22,8 +22,6 @@ namespace GameState
             // タイマー、カウントダウンの初期化
             _inGamePresenter.TimerPresenter.Initialize();
 
-            //TODO : スコアの初期化、ランキング・ボタン類の非表示
-
             // StartStateへ
             _stateMachine.ChangeState(_inGamePresenter.InGameStartState);
         }

@@ -1,7 +1,7 @@
 using System;
 using UniRx;
 
-public class TimerPresenter
+public class TimerPresenter : PresenterBase
 {
     private TimerModel _model;
     private TimerView _view;
@@ -37,7 +37,7 @@ public class TimerPresenter
                     _view.IsCountDownTextActive(false);
                 }
             })
-            .AddTo(_model.Disposable);
+            .AddTo(Disposable);
 
         _model.Timer
             .Subscribe(value =>
@@ -48,7 +48,7 @@ public class TimerPresenter
                     _endGameSubject.OnNext(Unit.Default);
                 }
             })
-            .AddTo(_model.Disposable);
+            .AddTo(Disposable);
     }
 
     /// <summary>
